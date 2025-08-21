@@ -2,7 +2,10 @@ package com.pawansingh.journalApp.controller;
 
 import com.pawansingh.journalApp.entity.User;
 import com.pawansingh.journalApp.service.UserService;
+import com.pawansingh.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private WeatherService weatherService;
 
 
     ///  Now will be done by ADMIN only
@@ -65,4 +71,17 @@ public class UserController {
         return true;
     }
 
+    @GetMapping()
+    public ResponseEntity<?> greetings() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userService.findByUserName(authentication.getName());
+        System.out.println("Hello check 1");
+        return new ResponseEntity<>("Hii " + authentication.getName() + " weather feels like " + weatherService.getWeather("Mumbai").getCurrent().getFeelslike(), HttpStatus.OK);
+    }
+
+
 }
+
+
+// S1bGiW8/OdBnsxtkpSoIgQ==gWbPGyFL30jezv5m    quotes
+// 73c174d4e3da969cdc7e06a156eae94d     weather
