@@ -1,7 +1,9 @@
 package com.pawansingh.journalApp.entity;
 
+import com.pawansingh.journalApp.enums.Sentiment;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @Getter // lambok
 @Setter // lambok
 @Data  // lambok
+//@NoArgsConstructor
 public class JournalEntryV2 {
     @Id // to make id as primary key
     private ObjectId id;
@@ -24,6 +27,6 @@ public class JournalEntryV2 {
     private String title;
     private String content;
     private LocalDateTime date;
-
+    private Sentiment sentiment;
 
 }
