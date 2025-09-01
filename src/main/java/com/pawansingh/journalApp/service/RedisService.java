@@ -15,7 +15,7 @@ public class RedisService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public <T> T get(String key, Class<T> weatherResponseClass){
+    public <T> T get(String key, Class<T> weatherResponseClass) {
         try {
             Object o = redisTemplate.opsForValue().get(key);
             // this will return whatever we want it to return like this time Complete Weather Response
@@ -23,16 +23,28 @@ public class RedisService {
             // returned to a specific data type like Weather Response in our case, use object mapper for this
 
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(o.toString(),weatherResponseClass);
+            return objectMapper.readValue(o.toString(), weatherResponseClass);
         } catch (Exception e) {
             log.error("Exception" + e);
             return null;
         }
     }
 
-    public void set(String key, Object o, Long ttl){ // ttl -> time to live
-//        redisTemplate.opsForValue().set(key,o,ttl); // without time unit
-        redisTemplate.opsForValue().set(key,o,ttl, TimeUnit.HOURS);
+    public void set(String key, Object o, Long ttl) { // ttl -> time to live
+
+        try {
+            // as we have string serializer and deserializer we need to convert to string
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonValue = objectMapper.writeValueAsString(o);
+
+
+
+            // redisTemplate.opsForValue().set(key,o,ttl); // without time unit
+            redisTemplate.opsForValue().set(key, o, ttl, TimeUnit.HOURS);
+        } catch (Exception e) {
+            log.error("Exception: " + e);
+        }
+
     }
 
 }
