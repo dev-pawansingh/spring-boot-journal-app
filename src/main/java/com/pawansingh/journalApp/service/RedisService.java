@@ -40,7 +40,7 @@ public class RedisService {
 
 
             // redisTemplate.opsForValue().set(key,o,ttl); // without time unit
-            redisTemplate.opsForValue().set(key, o, ttl, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set(key, o, ttl, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error("Exception: " + e);
         }
